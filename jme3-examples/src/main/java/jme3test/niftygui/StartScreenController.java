@@ -29,61 +29,64 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package jme3test.niftygui;
 
-package jme3test.app;
-
-import com.jme3.app.LegacyApplication;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
+import com.jme3.app.Application;
+import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.screen.Screen;
+import de.lessvoid.nifty.screen.ScreenController;
 
 /**
- * Test a bare-bones application, without SimpleApplication.
+ * A ScreenController for the "start" screen defined in
+ * "Interfaces/Nifty/HelloJme.xml", which is used in the TestAppStates and
+ * TestNiftyGui applications.
  */
-public class TestBareBonesApp extends LegacyApplication {
+public class StartScreenController implements ScreenController {
 
-    private Geometry boxGeom;
+    final private Application application;
 
-    public static void main(String[] args){
-        TestBareBonesApp app = new TestBareBonesApp();
-        app.start();
+    /**
+     * Instantiate a ScreenController for the specified Application.
+     *
+     * @param app the Application
+     */
+    public StartScreenController(Application app) {
+        this.application = app;
     }
 
+    /**
+     * Nifty invokes this method when the screen gets enabled for the first
+     * time.
+     *
+     * @param nifty (not null)
+     * @param screen (not null)
+     */
     @Override
-    public void initialize(){
-        super.initialize();
-
-        System.out.println("Initialize");
-
-        // create a box
-        boxGeom = new Geometry("Box", new Box(2, 2, 2));
-
-        // load some default material
-        boxGeom.setMaterial(assetManager.loadMaterial("Interface/Logo/Logo.j3m"));
-
-        // attach box to display in primary viewport
-        viewPort.attachScene(boxGeom);
+    public void bind(Nifty nifty, Screen screen) {
+        System.out.println("bind(" + screen.getScreenId() + ")");
     }
 
+    /**
+     * Nifty invokes this method each time the screen starts up.
+     */
     @Override
-    public void update(){
-        super.update();
-
-        // do some animation
-        float tpf = timer.getTimePerFrame();
-        boxGeom.rotate(tpf * 2, tpf * 4, tpf * 3);
-
-        // don't forget to update the scenes
-        boxGeom.updateLogicalState(tpf);
-        boxGeom.updateGeometricState();
-
-        // render the viewports
-        renderManager.render(tpf, context.isRenderable());
+    public void onStartScreen() {
+        System.out.println("onStartScreen");
     }
 
+    /**
+     * Nifty invokes this method each time the screen shuts down.
+     */
     @Override
-    public void destroy(){
-        super.destroy();
+    public void onEndScreen() {
+        System.out.println("onEndScreen");
+    }
 
-        System.out.println("Destroy");
+    /**
+     * Stop the Application. Nifty invokes this method (via reflection) after
+     * the user clicks on the flashing orange panel.
+     */
+    public void quit() {
+        application.stop();
     }
 }

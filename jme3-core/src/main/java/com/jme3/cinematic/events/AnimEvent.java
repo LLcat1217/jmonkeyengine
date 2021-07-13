@@ -118,10 +118,14 @@ public class AnimEvent extends AbstractCinematicEvent {
      */
     @Override
     public void onPause() {
-        logger.log(Level.SEVERE, "");
+        logger.log(Level.INFO, "layer={0} action={1}",
+                new Object[]{layerName, actionName});
 
-        Action eventAction = composer.action(actionName);
-        eventAction.setSpeed(0f);
+        Object layerManager = composer.getLayerManager(layerName);
+        if (layerManager == this) {
+            Action eventAction = composer.action(actionName);
+            eventAction.setSpeed(0f);
+        }
     }
 
     /**
@@ -129,7 +133,8 @@ public class AnimEvent extends AbstractCinematicEvent {
      */
     @Override
     public void onPlay() {
-        logger.log(Level.INFO, "");
+        logger.log(Level.INFO, "layer={0} action={1}",
+                new Object[]{layerName, actionName});
 
         Action currentAction = composer.getCurrentAction(layerName);
         Action eventAction = composer.action(actionName);
@@ -142,6 +147,7 @@ public class AnimEvent extends AbstractCinematicEvent {
             composer.setTime(layerName, 0.0);
         }
         eventAction.setSpeed(speed);
+        composer.setLayerManager(layerName, this);
     }
 
     /**
@@ -149,8 +155,14 @@ public class AnimEvent extends AbstractCinematicEvent {
      */
     @Override
     public void onStop() {
-        logger.log(Level.INFO, "");
-        composer.removeCurrentAction(layerName);
+        logger.log(Level.INFO, "layer={0} action={1}",
+                new Object[]{layerName, actionName});
+
+        Object layerManager = composer.getLayerManager(layerName);
+        if (layerManager == this) {
+            composer.removeCurrentAction(layerName);
+            composer.setLayerManager(layerName, null);
+        }
     }
 
     /**
@@ -205,7 +217,8 @@ public class AnimEvent extends AbstractCinematicEvent {
      */
     @Override
     public void setTime(float time) {
-        logger.log(Level.INFO, "time = {0}", time);
+        logger.log(Level.INFO, "layer={0} action={1} time={2}",
+                new Object[]{layerName, actionName, time});
         super.setTime(time);
 
         Action currentAction = composer.getCurrentAction(layerName);

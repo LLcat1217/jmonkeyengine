@@ -63,7 +63,7 @@ public class TransformTrack implements AnimTrack<Transform> {
     /**
      * Serialization-only. Do not use.
      */
-    public TransformTrack() {
+    protected TransformTrack() {
     }
 
     /**
@@ -83,10 +83,10 @@ public class TransformTrack implements AnimTrack<Transform> {
     /**
      * return the array of rotations of this track
      *
-     * @return an array
+     * @return an array, or null if no rotations
      */
     public Quaternion[] getRotations() {
-        return rotations.toObjectArray();
+        return rotations == null ? null : rotations.toObjectArray();
     }
 
     /**
@@ -110,10 +110,10 @@ public class TransformTrack implements AnimTrack<Transform> {
     /**
      * returns the array of translations of this track
      *
-     * @return an array
+     * @return an array, or null if no translations
      */
     public Vector3f[] getTranslations() {
-        return translations.toObjectArray();
+        return translations == null ? null : translations.toObjectArray();
     }
 
 
@@ -197,7 +197,9 @@ public class TransformTrack implements AnimTrack<Transform> {
      * @param scales       the scale of the bone for each frame
      */
     public void setKeyframes(float[] times, Vector3f[] translations, Quaternion[] rotations, Vector3f[] scales) {
-        setTimes(times);
+        if (times != null) {
+            setTimes(times);
+        }
         if (translations != null) {
             setKeyframesTranslation(translations);
         }

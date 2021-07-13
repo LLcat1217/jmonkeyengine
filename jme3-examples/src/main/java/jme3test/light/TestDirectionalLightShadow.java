@@ -198,9 +198,6 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
     }
 
     private void initInputs() {
-
-        inputManager.addMapping("ThicknessUp", new KeyTrigger(KeyInput.KEY_Y));
-        inputManager.addMapping("ThicknessDown", new KeyTrigger(KeyInput.KEY_H));
         inputManager.addMapping("lambdaUp", new KeyTrigger(KeyInput.KEY_U));
         inputManager.addMapping("lambdaDown", new KeyTrigger(KeyInput.KEY_J));
         inputManager.addMapping("switchGroundMat", new KeyTrigger(KeyInput.KEY_M));
@@ -219,7 +216,7 @@ public class TestDirectionalLightShadow extends SimpleApplication implements Act
         inputManager.addMapping("backShadows", new KeyTrigger(KeyInput.KEY_K));
 
 
-        inputManager.addListener(this, "lambdaUp", "lambdaDown", "ThicknessUp", "ThicknessDown",
+        inputManager.addListener(this, "lambdaUp", "lambdaDown",
                 "switchGroundMat", "debug", "up", "down", "right", "left", "fwd", "back", "pp", "stabilize", "distance", "ShadowUp", "ShadowDown", "backShadows");
 
         ShadowTestUIManager uiMan = new ShadowTestUIManager(assetManager, dlsr, dlsf, guiNode, inputManager, viewPort);

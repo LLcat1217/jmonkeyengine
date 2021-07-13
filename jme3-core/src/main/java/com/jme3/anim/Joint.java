@@ -167,9 +167,9 @@ public class Joint implements Savable, JmeCloneable, HasLocalTransform {
      * have already been computed, otherwise this method will return undefined
      * results.
      *
-     * @param outTransform
+     * @param outTransform storage for the result (modified)
      */
-    void getOffsetTransform(Matrix4f outTransform) {
+    protected void getOffsetTransform(Matrix4f outTransform) {
         jointModelTransform.getOffsetTransform(outTransform, inverseModelBindMatrix);
     }
 
@@ -358,8 +358,9 @@ public class Joint implements Savable, JmeCloneable, HasLocalTransform {
      * @param jointIndex this bone's index in its armature (&ge;0)
      * @param targets    a list of geometries animated by this bone's skeleton (not
      *                   null, unaffected)
+     * @return the attachments node (not null)
      */
-    Node getAttachmentsNode(int jointIndex, SafeArrayList<Geometry> targets) {
+    protected Node getAttachmentsNode(int jointIndex, SafeArrayList<Geometry> targets) {
         targetGeometry = null;
         /*
          * Search for a geometry animated by this particular bone.
